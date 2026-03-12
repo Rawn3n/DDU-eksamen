@@ -31,6 +31,11 @@ public class PlayerController : MonoBehaviour
     public int maxDash = 1;
     private int dashRemaning;
 
+    [Header("Ice")]
+    public float normalDeceleration = 10f;
+    public float iceDeceleration = 1f;  // jo lavere jo mere glidende
+    private bool onIce = false;
+
     private bool isDashing;
     private float dashCooldownTimer;
     private TrailRenderer dashTrail;
@@ -164,7 +169,17 @@ public class PlayerController : MonoBehaviour
         if (isSprinting && !isCrouching) speed *= sprintMultiplier; // sørger for at crouch ikke kan sprint
         if (isCrouching) speed *= crouchSpeedMultiplier; // sørger for at crouch hastighed er mindre
 
-        rb.linearVelocity = new Vector2(moveInput.x * speed, rb.linearVelocity.y);
+        float decel = onIce ? iceDeceleration : normalDeceleration;
+
+        if (moveInput.x == 0)
+        {
+            // Glidende stop på is, ellers normalt stop
+            rb.linearVelocity = new Vector2(Mathf.Lerp(rb.linearVelocity.x, 0, decel * Time.deltaTime), rb.linearVelocity.y);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(moveInput.x * speed, rb.linearVelocity.y);
+        }
     }
 
     private void RefreshGroundState()
@@ -225,5 +240,11 @@ public class PlayerController : MonoBehaviour
         isDashing = false;
 
         if (dashTrail != null) dashTrail.emitting = false;
+    }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        onIce = collision.gameObject.CompareTag("Ice");
+        Debug.Log("On Ice: " + onIce);
     }
 }

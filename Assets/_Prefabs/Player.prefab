@@ -141,7 +141,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 1.5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -207,7 +207,7 @@ MonoBehaviour:
   jumpForce: 8
   maxJumps: 1
   crouchSpeedMultiplier: 0.5
-  crouchScaleY: 0.9
+  crouchScaleY: 0.7
   groundCheck: {fileID: 3626692928613179438}
   groundCheckRadius: 0.15
   groundLayer:
