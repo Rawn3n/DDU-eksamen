@@ -87,6 +87,11 @@ public class GameManager : MonoBehaviour
         if (!ctx.performed) return;
         ActivePlayer.ReceiveJump();
     }
+    public void OnDash(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.performed) return;
+        ActivePlayer.ReceiveDash();
+    }
 
     public void OnSprint(InputAction.CallbackContext ctx)
     {
