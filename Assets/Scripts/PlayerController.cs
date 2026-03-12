@@ -91,16 +91,11 @@ public class PlayerController : MonoBehaviour
     {
         if (!isActive) return;
         if (jumpsRemaining <= 0) return;
-        if (isJumping) return;
 
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        --jumpsRemaining;
-        if (jumpsRemaining <= 0)
-        {
-            isJumping = true;
 
-        }
+        jumpsRemaining--;
     }
 
     public void ReceiveSprint(bool pressed)
@@ -119,14 +114,12 @@ public class PlayerController : MonoBehaviour
     {
         if (!isActive) return;
         Debug.Log("Attack!");
-        // TODO: trigger attack animation / hitbox
     }
 
     public void ReceiveInteract()
     {
         if (!isActive) return;
         Debug.Log("Interact!");
-        // TODO: raycast / overlap check for interactables
     }
 
 
@@ -145,7 +138,7 @@ public class PlayerController : MonoBehaviour
 
         bool grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
-        if (grounded == true)
+        if (grounded && rb.linearVelocity.y <= 0)
         {
             jumpsRemaining = maxJumps;
             isJumping = false;
