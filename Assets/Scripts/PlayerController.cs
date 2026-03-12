@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     public int maxDash = 1;
     private int dashRemaning;
     public bool canDash;
+    public AudioClip dashLyd;
 
     //public bool CanDash => !isDashing && dashCooldownTimer <= 0 && dashRemaning > 0; // Til dash indikator
 
@@ -57,6 +58,8 @@ public class PlayerController : MonoBehaviour
     private bool isActive = false;
     //private bool isJumping;
 
+    private AudioSource audioSource;
+
 
     private void Awake()
     {
@@ -66,6 +69,8 @@ public class PlayerController : MonoBehaviour
 
         dashTrail = GetComponentInChildren<TrailRenderer>();
         if (dashTrail != null) dashTrail.emitting = false;
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -236,6 +241,12 @@ public class PlayerController : MonoBehaviour
     private IEnumerator DashCoroutine()
     {
         isDashing = true;
+
+        if (dashLyd != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(dashLyd);
+        }
+
         dashCooldownTimer = dashCooldown;
 
         Vector2 dashDirection = moveInput.magnitude > 0.1f ? moveInput.normalized : new Vector2(spriteRenderer.flipX ? -1f : 1f, 0f);
