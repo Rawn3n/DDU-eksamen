@@ -30,6 +30,9 @@ public class PlayerController : MonoBehaviour
     public float dashVerticalMultiplier = 0.5f;
     public int maxDash = 1;
     private int dashRemaning;
+    public bool canDash;
+
+    //public bool CanDash => !isDashing && dashCooldownTimer <= 0 && dashRemaning > 0; // Til dash indikator
 
     [Header("Ice")]
     public float normalDeceleration = 10f;
@@ -76,6 +79,16 @@ public class PlayerController : MonoBehaviour
         if (dashCooldownTimer > 0)
         {
             dashCooldownTimer -= Time.deltaTime;
+        }
+
+
+        if (!isDashing && dashCooldownTimer <= 0 && dashRemaning > 0) // Til dash indikator
+        {
+            canDash = true;
+        }
+        else
+        {
+            canDash = false;
         }
 
         RefreshGroundState();
@@ -245,6 +258,5 @@ public class PlayerController : MonoBehaviour
     void OnCollisionStay2D(Collision2D collision)
     {
         onIce = collision.gameObject.CompareTag("Ice");
-        Debug.Log("On Ice: " + onIce);
     }
 }
