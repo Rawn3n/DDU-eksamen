@@ -242,7 +242,7 @@ public class PlayerController : MonoBehaviour
     {
         isDashing = true;
 
-        if (dashLyd != null && audioSource != null)
+        if (dashLyd != null && audioSource != null) // afpil dash lyd
         {
             audioSource.PlayOneShot(dashLyd);
         }
