@@ -712,6 +712,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthSystem
   maxHealth: 3
+  deathLyd: {fileID: 8300000, guid: 18b47ffa96ac25440871b669d65bca95, type: 3}
 --- !u!1 &6142628062215350058
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,7 +4,13 @@ public class HealthSystem : MonoBehaviour
 {
     [SerializeField] int maxHealth = 3;
     int currentHealth;
+    public AudioClip deathLyd;
+    private AudioSource audioSource;
 
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
     private void Start()
     {
         currentHealth = maxHealth;
@@ -20,7 +26,11 @@ public class HealthSystem : MonoBehaviour
     }
     public void Die()
     {
-        // Implement death logic here (e.g., play animation, disable character, etc.)
-        Debug.Log("Character has died.");
+        Debug.Log("DØD!");
+
+        if (audioSource != null && deathLyd != null)
+        {
+            audioSource.PlayOneShot(deathLyd);
+        }
     }
 }
