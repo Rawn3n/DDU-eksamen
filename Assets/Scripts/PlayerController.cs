@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     private int dashRemaning;
     public bool canDash;
     public AudioClip dashLyd;
+    [SerializeField] public float dashGravityAfter = 2f;
 
     //public bool CanDash => !isDashing && dashCooldownTimer <= 0 && dashRemaning > 0; // Til dash indikator
 
@@ -260,7 +261,7 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(dashDuration);
 
-        rb.gravityScale = 1f;
+        rb.gravityScale = dashGravityAfter;
         isDashing = false;
 
         if (dashTrail != null) dashTrail.emitting = false;
