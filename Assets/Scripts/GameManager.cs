@@ -13,8 +13,10 @@ public class GameManager : MonoBehaviour
     [Header("Switch Settings")]
     public float switchInterval = 5f;
 
-    private int activePlayerIndex = 0;
+    [Header("Switch Effect")]
+    public GameObject switchEffectPrefab;
 
+    private int activePlayerIndex = 0;
     private PlayerController ActivePlayer => activePlayerIndex == 0 ? player1 : player2;
 
     void Awake()
@@ -22,7 +24,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Singelton GameManager sat op
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -30,6 +32,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Kan blive kaldt ved: GameManager.Instance.funktionnavn(); @Mikkel
     void Start()
     {
         SetActivePlayer(0);
@@ -59,10 +62,17 @@ public class GameManager : MonoBehaviour
         Transform target = index == 0 ? player1.transform : player2.transform;
         CameraFollow.Instance.SetTarget(target);
 
+        if (switchEffectPrefab != null) 
+        {
+            GameObject effect = Instantiate(switchEffectPrefab, target.position, Quaternion.identity);
+            Destroy(effect, 2f);
+        }
+
+
         Debug.Log("Now controlling: Player " + (index + 1));
     }
 
-
+    #region Player Input Ting
     public void OnMove(InputAction.CallbackContext ctx)
     {
         ActivePlayer.ReceiveMove(ctx.ReadValue<Vector2>());
@@ -77,6 +87,11 @@ public class GameManager : MonoBehaviour
     {
         if (!ctx.performed) return;
         ActivePlayer.ReceiveJump();
+    }
+    public void OnDash(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.performed) return;
+        ActivePlayer.ReceiveDash();
     }
 
     public void OnSprint(InputAction.CallbackContext ctx)
@@ -102,6 +117,5 @@ public class GameManager : MonoBehaviour
         if (!ctx.performed) return;
         ActivePlayer.ReceiveInteract();
     }
-
-    // Kan stadig kaldes manuelt ved: GameManager.Instance.funktionnavn; @Mikkel
+    #endregion
 }

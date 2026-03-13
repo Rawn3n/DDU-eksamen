@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
@@ -11,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [Header("Jump")]
     public float jumpForce = 12f;
     public int maxJumps = 1;
+    private int jumpsRemaining;
 
     [Header("Crouch")]
     public float crouchSpeedMultiplier = 0.5f;
@@ -20,6 +22,28 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheck;
     public float groundCheckRadius = 0.15f;
     public LayerMask groundLayer;
+
+    [Header("Dash")]
+    public float dashForce = 20f;
+    public float dashDuration = 0.15f;
+    public float dashCooldown = 1f;
+    public float dashVerticalMultiplier = 0.5f;
+    public int maxDash = 1;
+    private int dashRemaning;
+    public bool canDash;
+    public AudioClip dashLyd;
+    [SerializeField] public float dashGravityAfter = 2f;
+
+    //public bool CanDash => !isDashing && dashCooldownTimer <= 0 && dashRemaning > 0; // Til dash indikator
+
+    [Header("Ice")]
+    public float normalDeceleration = 10f;
+    public float iceDeceleration = 1f;  // jo lavere jo mere glidende
+    private bool onIce = false;
+
+    private bool isDashing;
+    private float dashCooldownTimer;
+    private TrailRenderer dashTrail;
 
     // Components
     private Rigidbody2D rb;
@@ -31,10 +55,11 @@ public class PlayerController : MonoBehaviour
     private Vector2 lookInput;
     private bool isSprinting;
     private bool isCrouching;
-    private int jumpsRemaining;
 
     private bool isActive = false;
-    private bool isJumping;
+    //private bool isJumping;
+
+    private AudioSource audioSource;
 
 
     private void Awake()
@@ -42,15 +67,36 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         originalScale = transform.localScale;
+
+        dashTrail = GetComponentInChildren<TrailRenderer>();
+        if (dashTrail != null) dashTrail.emitting = false;
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
     {
+        dashRemaning = maxDash;
         jumpsRemaining = maxJumps;
     }
 
     private void Update()
     {
+        if (dashCooldownTimer > 0)
+        {
+            dashCooldownTimer -= Time.deltaTime;
+        }
+
+
+        if (!isDashing && dashCooldownTimer <= 0 && dashRemaning > 0) // Til dash indikator
+        {
+            canDash = true;
+        }
+        else
+        {
+            canDash = false;
+        }
+
         RefreshGroundState();
         HandleCrouchScale();
         FlipSprite();
@@ -58,7 +104,10 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        ApplyMovement();
+        if (!isDashing)
+        {
+            ApplyMovement();
+        }
     }
 
     public void SetActive(bool active)
@@ -91,16 +140,11 @@ public class PlayerController : MonoBehaviour
     {
         if (!isActive) return;
         if (jumpsRemaining <= 0) return;
-        if (isJumping) return;
 
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        --jumpsRemaining;
-        if (jumpsRemaining <= 0)
-        {
-            isJumping = true;
 
-        }
+        jumpsRemaining--;
     }
 
     public void ReceiveSprint(bool pressed)
@@ -119,16 +163,24 @@ public class PlayerController : MonoBehaviour
     {
         if (!isActive) return;
         Debug.Log("Attack!");
-        // TODO: trigger attack animation / hitbox
     }
 
     public void ReceiveInteract()
     {
         if (!isActive) return;
         Debug.Log("Interact!");
-        // TODO: raycast / overlap check for interactables
     }
+    public void ReceiveDash()
+    {
+        if (!isActive) return;
+        if (isDashing) return;
+        if (dashCooldownTimer > 0) return;
+        if (dashRemaning <= 0) return;
 
+        StartCoroutine(DashCoroutine());
+
+        dashRemaning--;
+    }
 
     private void ApplyMovement()
     {
@@ -136,7 +188,17 @@ public class PlayerController : MonoBehaviour
         if (isSprinting && !isCrouching) speed *= sprintMultiplier; // sørger for at crouch ikke kan sprint
         if (isCrouching) speed *= crouchSpeedMultiplier; // sørger for at crouch hastighed er mindre
 
-        rb.linearVelocity = new Vector2(moveInput.x * speed, rb.linearVelocity.y);
+        float decel = onIce ? iceDeceleration : normalDeceleration;
+
+        if (moveInput.x == 0)
+        {
+            // Glidende stop på is, ellers normalt stop
+            rb.linearVelocity = new Vector2(Mathf.Lerp(rb.linearVelocity.x, 0, decel * Time.deltaTime), rb.linearVelocity.y);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(moveInput.x * speed, rb.linearVelocity.y);
+        }
     }
 
     private void RefreshGroundState()
@@ -145,10 +207,11 @@ public class PlayerController : MonoBehaviour
 
         bool grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
-        if (grounded == true)
+        if (grounded && rb.linearVelocity.y <= 0)
         {
             jumpsRemaining = maxJumps;
-            isJumping = false;
+            dashRemaning = maxDash;
+            //isJumping = false;
         }
     }
 
@@ -174,5 +237,38 @@ public class PlayerController : MonoBehaviour
         if (groundCheck == null) return;
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+    }
+
+    private IEnumerator DashCoroutine()
+    {
+        isDashing = true;
+
+        if (dashLyd != null && audioSource != null) // afpil dash lyd
+        {
+            audioSource.PlayOneShot(dashLyd);
+        }
+
+        dashCooldownTimer = dashCooldown;
+
+        Vector2 dashDirection = moveInput.magnitude > 0.1f ? moveInput.normalized : new Vector2(spriteRenderer.flipX ? -1f : 1f, 0f);
+
+        dashDirection = new Vector2(dashDirection.x, dashDirection.y * dashVerticalMultiplier);
+
+        rb.gravityScale = 0f; //slå gravcity fra under dash
+        rb.linearVelocity = dashDirection * dashForce;
+
+        if (dashTrail != null) dashTrail.emitting = true; //dash effekt
+
+        yield return new WaitForSeconds(dashDuration);
+
+        rb.gravityScale = dashGravityAfter;
+        isDashing = false;
+
+        if (dashTrail != null) dashTrail.emitting = false;
+    }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        onIce = collision.gameObject.CompareTag("Ice");
     }
 }
