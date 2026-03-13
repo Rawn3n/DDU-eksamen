@@ -303,6 +303,7 @@ GameObject:
   - component: {fileID: 7406503864062844401}
   - component: {fileID: 5583802688425857101}
   - component: {fileID: 3822688148112926349}
+  - component: {fileID: 2167494515675605273}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -401,7 +402,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 2
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 72ac111391aa5a547b77558aea4f82d3, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -479,6 +480,7 @@ MonoBehaviour:
   maxDash: 1
   canDash: 0
   dashLyd: {fileID: 8300000, guid: a7935d3d7266a8d47b6ddb34741aa42f, type: 3}
+  dashGravityAfter: 2
   normalDeceleration: 10
   iceDeceleration: 1
 --- !u!96 &5583802688425857101
@@ -697,6 +699,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2167494515675605273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2843285398990301626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b95961069fab0e64382824f00d95c36e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthSystem
+  maxHealth: 3
 --- !u!1 &6142628062215350058
 GameObject:
   m_ObjectHideFlags: 0
