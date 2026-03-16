@@ -6,10 +6,12 @@ public class HealthSystem : MonoBehaviour
     int currentHealth;
     public AudioClip deathLyd;
     private AudioSource audioSource;
+    private Respawn respawn;
 
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        respawn = FindFirstObjectByType<Respawn>();
     }
     private void Start()
     {
@@ -32,5 +34,7 @@ public class HealthSystem : MonoBehaviour
         {
             audioSource.PlayOneShot(deathLyd);
         }
+
+        respawn.RespawnPlayer(gameObject);
     }
 }

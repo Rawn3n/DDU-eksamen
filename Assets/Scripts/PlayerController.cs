@@ -36,6 +36,15 @@ public class PlayerController : MonoBehaviour
 
     //public bool CanDash => !isDashing && dashCooldownTimer <= 0 && dashRemaning > 0; // Til dash indikator
 
+    [Header("WallJump")]
+    private bool isWallSliding;
+    private float wallSlideSpeed = 1f;
+    private float wallCheckRadius = 0.15f;
+    private bool isFlipped;
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private LayerMask wallLayer;
+
+
     [Header("Ice")]
     public float normalDeceleration = 10f;
     public float iceDeceleration = 1f;  // jo lavere jo mere glidende
@@ -97,6 +106,8 @@ public class PlayerController : MonoBehaviour
             canDash = false;
         }
 
+        RefreshWallState();
+        WallSlide();
         RefreshGroundState();
         HandleCrouchScale();
         FlipSprite();
@@ -114,7 +125,7 @@ public class PlayerController : MonoBehaviour
     {
         isActive = active;
 
-        // Gør så den anden spiller ikke kan bevæge sig når den ikke er aktiv
+        // Gï¿½r sï¿½ den anden spiller ikke kan bevï¿½ge sig nï¿½r den ikke er aktiv
         if (!active)
         {
             moveInput = Vector2.zero;
@@ -185,14 +196,14 @@ public class PlayerController : MonoBehaviour
     private void ApplyMovement()
     {
         float speed = moveSpeed;
-        if (isSprinting && !isCrouching) speed *= sprintMultiplier; // sørger for at crouch ikke kan sprint
-        if (isCrouching) speed *= crouchSpeedMultiplier; // sørger for at crouch hastighed er mindre
+        if (isSprinting && !isCrouching) speed *= sprintMultiplier; // sï¿½rger for at crouch ikke kan sprint
+        if (isCrouching) speed *= crouchSpeedMultiplier; // sï¿½rger for at crouch hastighed er mindre
 
         float decel = onIce ? iceDeceleration : normalDeceleration;
 
         if (moveInput.x == 0)
         {
-            // Glidende stop på is, ellers normalt stop
+            // Glidende stop pï¿½ is, ellers normalt stop
             rb.linearVelocity = new Vector2(Mathf.Lerp(rb.linearVelocity.x, 0, decel * Time.deltaTime), rb.linearVelocity.y);
         }
         else
@@ -205,9 +216,7 @@ public class PlayerController : MonoBehaviour
     {
         if (groundCheck == null) return;
 
-        bool grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-
-        if (grounded && rb.linearVelocity.y <= 0)
+        if (isGrounded() && rb.linearVelocity.y <= 0)
         {
             jumpsRemaining = maxJumps;
             dashRemaning = maxDash;
@@ -215,11 +224,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void RefreshWallState()
+    {
+        if (wallCheck == null) return;
+        if (isFlipped)
+        {
+            wallCheck.localPosition = new Vector3(-Mathf.Abs(wallCheck.localPosition.x), wallCheck.localPosition.y, wallCheck.localPosition.z);
+        }
+    }
+
     private void HandleCrouchScale()
     {
-        Vector3 target = isCrouching ? new Vector3(originalScale.x, originalScale.y * crouchScaleY, originalScale.z) : originalScale; // hvis du croucher så... ellers original scale
+        Vector3 target = isCrouching ? new Vector3(originalScale.x, originalScale.y * crouchScaleY, originalScale.z) : originalScale; // hvis du croucher sï¿½... ellers original scale
 
-        transform.localScale = Vector3.Lerp(transform.localScale, target, Time.deltaTime * 15f); // smooth transition mellem courch og stå
+        transform.localScale = Vector3.Lerp(transform.localScale, target, Time.deltaTime * 15f); // smooth transition mellem courch og stï¿½
     }
 
     private void FlipSprite()
@@ -228,8 +246,17 @@ public class PlayerController : MonoBehaviour
 
         float flipInput = Mathf.Abs(moveInput.x) > 0.01f ? moveInput.x : lookInput.x;
 
-        if (flipInput > 0.01f) spriteRenderer.flipX = false;
-        else if (flipInput < -0.01f) spriteRenderer.flipX = true;
+        if (flipInput > 0.01f)
+        { 
+            spriteRenderer.flipX = false;
+            isFlipped = false;
+        }
+
+        else if (flipInput < -0.01f)
+        {
+            spriteRenderer.flipX = true;
+            isFlipped = true;
+        }
     }
 
     private void OnDrawGizmosSelected() //Debug til at se groundcheck radius i editor
@@ -237,6 +264,11 @@ public class PlayerController : MonoBehaviour
         if (groundCheck == null) return;
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+
+        if (wallCheck == null) return;
+        //Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(wallCheck.position, wallCheckRadius);
+
     }
 
     private IEnumerator DashCoroutine()
@@ -254,7 +286,7 @@ public class PlayerController : MonoBehaviour
 
         dashDirection = new Vector2(dashDirection.x, dashDirection.y * dashVerticalMultiplier);
 
-        rb.gravityScale = 0f; //slå gravcity fra under dash
+        rb.gravityScale = 0f; //slï¿½ gravcity fra under dash
         rb.linearVelocity = dashDirection * dashForce;
 
         if (dashTrail != null) dashTrail.emitting = true; //dash effekt
@@ -270,5 +302,28 @@ public class PlayerController : MonoBehaviour
     void OnCollisionStay2D(Collision2D collision)
     {
         onIce = collision.gameObject.CompareTag("Ice");
+    }
+
+    private bool isWalled()
+    {
+        return Physics2D.OverlapCircle(wallCheck.position, wallCheckRadius, wallLayer);
+    }
+
+    private bool isGrounded()
+    {
+        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+    }
+
+    private void WallSlide()
+        {
+        if (isWalled() && !isGrounded() && rb.linearVelocity.y < 0)
+        {
+            isWallSliding = true;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -wallSlideSpeed);
+        }
+        else
+        {
+            isWallSliding = false;
+        }
     }
 }
