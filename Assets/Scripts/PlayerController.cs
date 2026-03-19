@@ -37,12 +37,20 @@ public class PlayerController : MonoBehaviour
     //public bool CanDash => !isDashing && dashCooldownTimer <= 0 && dashRemaning > 0; // Til dash indikator
 
     [Header("WallJump")]
-    private bool isWallSliding;
-    private float wallSlideSpeed = 1f;
-    private float wallCheckRadius = 0.15f;
+    [SerializeField] private bool isWallSliding;
+    [SerializeField] private float wallSlideSpeed = 1f;
+    [SerializeField] private float wallCheckRadius = 0.15f;
     private bool isFlipped;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
+
+    private bool isWallJumping;
+    private float wallJumpingDirection;
+    private float wallJumpingTime = 0.2f;
+    private float wallJumpingCounter;
+    [SerializeField] private float wallJumpingDuration = 0.4f;
+    [SerializeField] private Vector2 wallJumpingPower = new Vector2(8f, 16f);
+
 
 
     [Header("Ice")]
@@ -106,16 +114,21 @@ public class PlayerController : MonoBehaviour
             canDash = false;
         }
 
+        WallJump();
         RefreshWallState();
         WallSlide();
         RefreshGroundState();
         HandleCrouchScale();
-        FlipSprite();
+        
+        if (!isWallJumping)
+        {
+           FlipSprite();
+        }
     }
 
     private void FixedUpdate()
     {
-        if (!isDashing)
+        if (!isDashing && !isWallJumping)
         {
             ApplyMovement();
         }
@@ -150,11 +163,29 @@ public class PlayerController : MonoBehaviour
     public void ReceiveJump()
     {
         if (!isActive) return;
-        if (jumpsRemaining <= 0) return;
 
+        // walljump
+        if (wallJumpingCounter > 0f)
+        {
+            isWallJumping = true;
+            rb.linearVelocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
+            wallJumpingCounter = 0f;
+
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.flipX = wallJumpingDirection < 0; // kig til rigtigt side efter walljump
+                isFlipped = wallJumpingDirection < 0;
+            }
+
+            CancelInvoke(nameof(StopWallJumping));
+            Invoke(nameof(StopWallJumping), wallJumpingDuration);
+            return;
+        }
+
+        //normal
+        if (jumpsRemaining <= 0) return;
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-
         jumpsRemaining--;
     }
 
@@ -227,9 +258,16 @@ public class PlayerController : MonoBehaviour
     private void RefreshWallState()
     {
         if (wallCheck == null) return;
-        if (isFlipped)
+
+        float absX = Mathf.Abs(wallCheck.localPosition.x);
+
+        if (isFlipped) // Flipper vores wallcheck den vej spilleren drejer
         {
-            wallCheck.localPosition = new Vector3(-Mathf.Abs(wallCheck.localPosition.x), wallCheck.localPosition.y, wallCheck.localPosition.z);
+            wallCheck.localPosition = new Vector3(-absX, wallCheck.localPosition.y, wallCheck.localPosition.z);
+        }
+        else
+        {
+            wallCheck.localPosition = new Vector3(absX, wallCheck.localPosition.y, wallCheck.localPosition.z);
         }
     }
 
@@ -311,7 +349,7 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer); 
     }
 
     private void WallSlide()
@@ -325,5 +363,23 @@ public class PlayerController : MonoBehaviour
         {
             isWallSliding = false;
         }
+    }
+
+    private void WallJump()
+    {
+        if (isWallSliding)
+        {
+            wallJumpingDirection = isFlipped ? 1f : -1f; // Bestem retning at hop i
+            wallJumpingCounter = wallJumpingTime;
+        }
+        else
+        {
+            wallJumpingCounter -= Time.deltaTime;
+        }
+    }
+
+    private void StopWallJumping()
+    {
+        isWallJumping = false;
     }
 }

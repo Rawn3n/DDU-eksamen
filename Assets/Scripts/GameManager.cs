@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Kan blive kaldt ved: GameManager.Instance.funktionnavn(); @Mikkel
+    // Kan blive kaldt ved GameManager.Instance.funktionnavn(); @Mikkel
     void Start()
     {
         SetActivePlayer(0);

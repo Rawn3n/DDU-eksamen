@@ -288,6 +288,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3851871193136080945}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2578496224231247622
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5911145347316470345}
+  m_Layer: 7
+  m_Name: WallCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5911145347316470345
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2578496224231247622}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.5, y: -0.10007, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3851871193136080945}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2843285398990301626
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,6 +356,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3626692928613179438}
+  - {fileID: 5911145347316470345}
   - {fileID: 6842390135374705957}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -447,8 +479,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.06619722, y: 0.028781354}
-  m_Size: {x: 0.9136559, y: 1.2516841}
+  m_Offset: {x: 0.034658015, y: 0.028781354}
+  m_Size: {x: 0.9767343, y: 1.2516841}
   m_Direction: 0
 --- !u!114 &7406503864062844401
 MonoBehaviour:
@@ -481,6 +513,15 @@ MonoBehaviour:
   canDash: 0
   dashLyd: {fileID: 8300000, guid: a7935d3d7266a8d47b6ddb34741aa42f, type: 3}
   dashGravityAfter: 3
+  isWallSliding: 0
+  wallSlideSpeed: 2
+  wallCheckRadius: 0.15
+  wallCheck: {fileID: 5911145347316470345}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 264
+  wallJumpingDuration: 0.4
+  wallJumpingPower: {x: 8, y: 12}
   normalDeceleration: 10
   iceDeceleration: 1
 --- !u!96 &5583802688425857101
@@ -713,6 +754,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HealthSystem
   maxHealth: 3
   deathLyd: {fileID: 8300000, guid: 18b47ffa96ac25440871b669d65bca95, type: 3}
+  respawnPoint: {x: 0, y: 0, z: 0}
+  respawnEffectPrefab: {fileID: 8061728582368079118, guid: e48d9ee772557c74f83e8be863e0c972, type: 3}
 --- !u!1 &6142628062215350058
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,29 +2,21 @@ using UnityEngine;
 
 public class Respawn : MonoBehaviour
 {
-    private Vector3 spawnPoint;
-
-    private void Start()
+    public void SetSpawnPoint(Vector3 newSpawn, GameObject player)
     {
-        spawnPoint = transform.position;
+        HealthSystem h = player.GetComponent<HealthSystem>();
+        if (h != null)
+        {
+            h.respawnPoint = newSpawn;
+            Debug.Log($"New spawn point set for {player.name} at: {newSpawn}");
+        }
     }
 
-    public void RespawnPlayer(GameObject player)
-    {
-        player.transform.position = spawnPoint;
-    }
-
-    public void SetSpawnPoint(Vector3 newSpawn)
-    {
-        Debug.Log($"New spawn point set at: {newSpawn}");
-        spawnPoint = newSpawn;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            SetSpawnPoint(collision.gameObject.transform.position);
+            SetSpawnPoint(transform.position, collision.gameObject);
         }
     }
 }
