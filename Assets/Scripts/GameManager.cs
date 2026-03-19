@@ -11,12 +11,13 @@ public class GameManager : MonoBehaviour
     public PlayerController player2;
 
     [Header("Switch Settings")]
-    public float switchInterval = 5f;
+    [SerializeField] public float switchInterval = 10f;
 
     [Header("Switch Effect")]
     public GameObject switchEffectPrefab;
 
-    private int activePlayerIndex = 0;
+    public int activePlayerIndex = 0;
+
     private PlayerController ActivePlayer => activePlayerIndex == 0 ? player1 : player2;
 
     void Awake()
@@ -43,13 +44,16 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(switchInterval);
+            yield return new WaitForSeconds(switchInterval + Random.Range(-5f,5f));
             PlayerSwitch();
         }
     }
 
     public void PlayerSwitch()
     {
+        PlayerController leaving = activePlayerIndex == 0 ? player1 : player2;
+        leaving.distractionInput = Vector2.zero;
+
         activePlayerIndex = activePlayerIndex == 0 ? 1 : 0;
         SetActivePlayer(activePlayerIndex);
     }

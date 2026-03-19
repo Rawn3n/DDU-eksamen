@@ -11,7 +11,16 @@ public class HUD_manager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         popupText.color = new Color(1, 1, 1, 0);
         popupText.transform.localScale = Vector3.zero;
     }

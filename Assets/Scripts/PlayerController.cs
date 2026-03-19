@@ -78,6 +78,8 @@ public class PlayerController : MonoBehaviour
 
     private AudioSource audioSource;
 
+    public Vector2 distractionInput;
+
 
     private void Awake()
     {
@@ -230,16 +232,19 @@ public class PlayerController : MonoBehaviour
         if (isSprinting && !isCrouching) speed *= sprintMultiplier; // s�rger for at crouch ikke kan sprint
         if (isCrouching) speed *= crouchSpeedMultiplier; // s�rger for at crouch hastighed er mindre
 
-        float decel = onIce ? iceDeceleration : normalDeceleration;
+        float decel = onIce ? iceDeceleration : normalDeceleration; // vælger deceleration baseret på vores onIce bool
 
-        if (moveInput.x == 0)
+        Vector2 combinedInput = moveInput + distractionInput; // Spiller kan kæmpe imod distraction
+        combinedInput.x = Mathf.Clamp(combinedInput.x, -1f, 1f);
+
+        if (combinedInput.x == 0)
         {
             // Glidende stop p� is, ellers normalt stop
             rb.linearVelocity = new Vector2(Mathf.Lerp(rb.linearVelocity.x, 0, decel * Time.deltaTime), rb.linearVelocity.y);
         }
         else
         {
-            rb.linearVelocity = new Vector2(moveInput.x * speed, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(combinedInput.x * speed, rb.linearVelocity.y);
         }
     }
 
@@ -381,5 +386,13 @@ public class PlayerController : MonoBehaviour
     private void StopWallJumping()
     {
         isWallJumping = false;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
+        }
     }
 }
