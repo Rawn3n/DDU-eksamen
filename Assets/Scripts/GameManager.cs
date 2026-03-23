@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     public void PlayerSwitch()
     {
-        PlayerController leaving = activePlayerIndex == 0 ? player1 : player2;
+        PlayerController leaving = activePlayerIndex == 0 ? player1 : player2; //clear distraction
         leaving.distractionInput = Vector2.zero;
 
         activePlayerIndex = activePlayerIndex == 0 ? 1 : 0;

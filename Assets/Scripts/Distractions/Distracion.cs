@@ -19,7 +19,6 @@ public class Distraction : MonoBehaviour
     private void Start()
     {
         players = new PlayerController[] { GameManager.Instance.player1, GameManager.Instance.player2 };
-        StartCoroutine(TriggerDistraction());
     }
 
 

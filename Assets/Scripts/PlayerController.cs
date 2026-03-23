@@ -126,14 +126,19 @@ public class PlayerController : MonoBehaviour
         {
            FlipSprite();
         }
-    }
 
-    private void FixedUpdate()
-    {
         if (!isDashing && !isWallJumping)
         {
             ApplyMovement();
         }
+    }
+
+    private void FixedUpdate()
+    {
+        //if (!isDashing && !isWallJumping)
+        //{
+        //    ApplyMovement();
+        //}
     }
 
     public void SetActive(bool active)
