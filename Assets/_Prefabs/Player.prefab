@@ -253,7 +253,7 @@ MonoBehaviour:
   dashForce: 15
   dashDuration: 0.3
   dashCooldown: 1
-  dashVerticalMultiplier: 0.3
+  dashVerticalMultiplier: 0.5
   maxDash: 1
   canDash: 0
   dashLyd: {fileID: 8300000, guid: a7935d3d7266a8d47b6ddb34741aa42f, type: 3}

@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
 
-        isRunning = Mathf.Abs(rb.linearVelocity.x) > 0.1f && !isCrouching && !isDashing && isGrounded() && !isWallSliding && !isWallJumping;
+        isRunning = Mathf.Abs(rb.linearVelocity.x) > 0.01f && !isCrouching && !isDashing && isGrounded() && !isWallSliding && !isWallJumping;
         Debug.Log("IsRunning: " + isRunning);
 
         if (animator != null) // lav løbe animation
@@ -215,6 +215,7 @@ public class PlayerController : MonoBehaviour
         // normal jump
         if (coyoteTimeCounter <= 0f) return;
         if (jumpsRemaining <= 0) return;
+        rb.gravityScale = dashGravityAfter; // sørger for at man rester gravity før man kan hoppe
 
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f); // Nulstil Y så hop altid føles ens
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
@@ -254,8 +255,6 @@ public class PlayerController : MonoBehaviour
         if (dashRemaning <= 0) return;
 
         StartCoroutine(DashCoroutine());
-
-        dashRemaning--;
     }
 
     private void ApplyMovement()
@@ -301,7 +300,10 @@ public class PlayerController : MonoBehaviour
         if (grounded && rb.linearVelocity.y <= 0)
         {
             jumpsRemaining = maxJumps;
-            dashRemaning = maxDash;
+            if (!isDashing)
+            {
+                dashRemaning = maxDash;
+            }
         }
     }
 
@@ -361,6 +363,7 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator DashCoroutine()
     {
+        dashRemaning--;
         isDashing = true;
 
         if (dashLyd != null && audioSource != null) // afpil dash lyd
