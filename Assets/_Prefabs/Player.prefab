@@ -78,6 +78,7 @@ GameObject:
   - component: {fileID: 5583802688425857101}
   - component: {fileID: 3822688148112926349}
   - component: {fileID: 2167494515675605273}
+  - component: {fileID: 2538941377501588008}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -239,6 +240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 6
   sprintMultiplier: 1.5
+  isRunning: 0
   jumpForce: 12
   maxJumps: 1
   crouchSpeedMultiplier: 0.5
@@ -263,6 +265,7 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 264
+  coyoteTime: 0.2
   wallJumpingDuration: 0.4
   wallJumpingPower: {x: 8, y: 12}
   normalDeceleration: 10
@@ -500,6 +503,28 @@ MonoBehaviour:
   deathLyd: {fileID: 8300000, guid: 18b47ffa96ac25440871b669d65bca95, type: 3}
   respawnPoint: {x: 0, y: 0, z: 0}
   respawnEffectPrefab: {fileID: 8061728582368079118, guid: e48d9ee772557c74f83e8be863e0c972, type: 3}
+--- !u!95 &2538941377501588008
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2843285398990301626}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c2134913024cbc3448de0ee5db87992a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6142628062215350058
 GameObject:
   m_ObjectHideFlags: 0
@@ -632,7 +657,6 @@ MonoBehaviour:
   Canvas: {fileID: 6142628062215350058}
   mainCamera: {fileID: 0}
   offset: {x: 0, y: 1.7, z: 0}
-  label: R2
 --- !u!1 &6178242300952201574
 GameObject:
   m_ObjectHideFlags: 0

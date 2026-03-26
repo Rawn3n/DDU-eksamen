@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed = 8f;
     public float sprintMultiplier = 1.6f;
+    public bool isRunning;
 
     [Header("Jump")]
     public float jumpForce = 12f;
@@ -43,6 +44,9 @@ public class PlayerController : MonoBehaviour
     private bool isFlipped;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private float coyoteTime = 0.2f;
+    private float coyoteTimeCounter;
+    private bool isHoldingWallSlide;
 
     private bool isWallJumping;
     private float wallJumpingDirection;
@@ -80,6 +84,9 @@ public class PlayerController : MonoBehaviour
 
     public Vector2 distractionInput;
 
+    // Animations
+    private Animator animator;
+
 
     private void Awake()
     {
@@ -91,6 +98,8 @@ public class PlayerController : MonoBehaviour
         if (dashTrail != null) dashTrail.emitting = false;
 
         audioSource = GetComponent<AudioSource>();
+
+        animator = GetComponentInChildren<Animator>();
     }
 
     private void Start()
@@ -101,13 +110,24 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+
+        isRunning = Mathf.Abs(rb.linearVelocity.x) > 0.1f && !isCrouching && !isDashing && isGrounded() && !isWallSliding && !isWallJumping;
+        Debug.Log("IsRunning: " + isRunning);
+
+        if (animator != null) // lav løbe animation
+        {
+            animator.SetBool("isRunning", isRunning);
+        }
+
+
+
         if (dashCooldownTimer > 0)
         {
             dashCooldownTimer -= Time.deltaTime;
         }
 
 
-        if (!isDashing && dashCooldownTimer <= 0 && dashRemaning > 0) // Til dash indikator
+        if (!isDashing && dashCooldownTimer <= 0 && dashRemaning > 0 && isWallSliding == false) // Til dash indikator
         {
             canDash = true;
         }
@@ -145,13 +165,15 @@ public class PlayerController : MonoBehaviour
     {
         isActive = active;
 
-        // G�r s� den anden spiller ikke kan bev�ge sig n�r den ikke er aktiv
+        // Gør så den anden spiller ikke kan bevæge sig når den ikke er aktiv
         if (!active)
         {
             moveInput = Vector2.zero;
             lookInput = Vector2.zero;
             isSprinting = false;
             isCrouching = false;
+            isHoldingWallSlide = false;
+            isRunning = false;
         }
     }
 
@@ -171,29 +193,33 @@ public class PlayerController : MonoBehaviour
     {
         if (!isActive) return;
 
-        // walljump
+        //wall jump
         if (wallJumpingCounter > 0f)
         {
             isWallJumping = true;
             rb.linearVelocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
             wallJumpingCounter = 0f;
+            coyoteTimeCounter = 0f;
 
             if (spriteRenderer != null)
             {
-                spriteRenderer.flipX = wallJumpingDirection < 0; // kig til rigtigt side efter walljump
+                spriteRenderer.flipX = wallJumpingDirection < 0; // Vend sprite den rigtige vej efter wall jump
                 isFlipped = wallJumpingDirection < 0;
             }
 
             CancelInvoke(nameof(StopWallJumping));
-            Invoke(nameof(StopWallJumping), wallJumpingDuration);
-            return;
+            Invoke(nameof(StopWallJumping), wallJumpingDuration); // Stop wall jump state efter kort tid
+            return; // Undgå at normal hop logik også kører samtidigt
         }
 
-        //normal
+        // normal jump
+        if (coyoteTimeCounter <= 0f) return;
         if (jumpsRemaining <= 0) return;
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f); // Nulstil Y så hop altid føles ens
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         jumpsRemaining--;
+        coyoteTimeCounter = 0f; // coyote time = 0 så man ikke kan hoppe igen
     }
 
     public void ReceiveSprint(bool pressed)
@@ -208,10 +234,10 @@ public class PlayerController : MonoBehaviour
         isCrouching = pressed;
     }
 
-    public void ReceiveAttack()
+    public void ReceiveWallSlide(bool pressed)
     {
         if (!isActive) return;
-        Debug.Log("Attack!");
+        isHoldingWallSlide = pressed;
     }
 
     public void ReceiveInteract()
@@ -223,6 +249,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!isActive) return;
         if (isDashing) return;
+        if (isWallSliding) return;
         if (dashCooldownTimer > 0) return;
         if (dashRemaning <= 0) return;
 
@@ -233,9 +260,11 @@ public class PlayerController : MonoBehaviour
 
     private void ApplyMovement()
     {
+        //isRunning = Mathf.Abs(moveInput.x) > 0.01f && !isCrouching && !isDashing;
+        //Debug.Log("IsRunning: " + isRunning);
         float speed = moveSpeed;
-        if (isSprinting && !isCrouching) speed *= sprintMultiplier; // s�rger for at crouch ikke kan sprint
-        if (isCrouching) speed *= crouchSpeedMultiplier; // s�rger for at crouch hastighed er mindre
+        if (isSprinting && !isCrouching) speed *= sprintMultiplier; // sorger for at crouch ikke kan sprint
+        if (isCrouching) speed *= crouchSpeedMultiplier; // sorger for at crouch hastighed er mindre
 
         float decel = onIce ? iceDeceleration : normalDeceleration; // vælger deceleration baseret på vores onIce bool
 
@@ -244,7 +273,7 @@ public class PlayerController : MonoBehaviour
 
         if (combinedInput.x == 0)
         {
-            // Glidende stop p� is, ellers normalt stop
+            // Glidende stop på is, ellers normalt stop
             rb.linearVelocity = new Vector2(Mathf.Lerp(rb.linearVelocity.x, 0, decel * Time.deltaTime), rb.linearVelocity.y);
         }
         else
@@ -257,11 +286,22 @@ public class PlayerController : MonoBehaviour
     {
         if (groundCheck == null) return;
 
-        if (isGrounded() && rb.linearVelocity.y <= 0)
+        bool grounded = isGrounded();
+
+        // Udnyt coyote time til at give spilleren en buffer
+        if (grounded)
+        {
+            coyoteTimeCounter = coyoteTime;
+        }
+        else if (!isWallSliding)
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
+
+        if (grounded && rb.linearVelocity.y <= 0)
         {
             jumpsRemaining = maxJumps;
             dashRemaning = maxDash;
-            //isJumping = false;
         }
     }
 
@@ -334,7 +374,7 @@ public class PlayerController : MonoBehaviour
 
         dashDirection = new Vector2(dashDirection.x, dashDirection.y * dashVerticalMultiplier);
 
-        rb.gravityScale = 0f; //sl� gravcity fra under dash
+        rb.gravityScale = 0f; //slå gravcity fra under dash
         rb.linearVelocity = dashDirection * dashForce;
 
         if (dashTrail != null) dashTrail.emitting = true; //dash effekt
@@ -364,10 +404,10 @@ public class PlayerController : MonoBehaviour
 
     private void WallSlide()
         {
-        if (isWalled() && !isGrounded() && rb.linearVelocity.y < 0)
+        if (isWalled() && !isGrounded() && rb.linearVelocity.y < 0 && isHoldingWallSlide == true)
         {
-            isWallSliding = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -wallSlideSpeed);
+            isWallSliding = true;
         }
         else
         {
@@ -377,7 +417,7 @@ public class PlayerController : MonoBehaviour
 
     private void WallJump()
     {
-        if (isWallSliding)
+        if (isWalled() && !isGrounded())
         {
             wallJumpingDirection = isFlipped ? 1f : -1f; // Bestem retning at hop i
             wallJumpingCounter = wallJumpingTime;

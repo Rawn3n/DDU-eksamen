@@ -115,10 +115,10 @@ public class GameManager : MonoBehaviour
         else if (ctx.canceled) ActivePlayer.ReceiveCrouch(false);
     }
 
-    public void OnAttack(InputAction.CallbackContext ctx)
+    public void OnWallSlide(InputAction.CallbackContext ctx)
     {
-        if (!ctx.performed) return;
-        ActivePlayer.ReceiveAttack();
+        if (ctx.performed) ActivePlayer.ReceiveWallSlide(true);
+        else if (ctx.canceled) ActivePlayer.ReceiveWallSlide(false);
     }
 
     public void OnInteract(InputAction.CallbackContext ctx)

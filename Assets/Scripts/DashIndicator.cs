@@ -9,8 +9,8 @@ public class DashIndicator : MonoBehaviour
     public Camera mainCamera;
 
     [Header("Settings")]
-    public Vector3 offset = new Vector3(0f, 2.2f, 0f);  // Offset så den er over spilleren
-    public string label = "R2";
+    public Vector3 offset = new Vector3(0f, 2.2f, 0f);  // Offset
+    //public string label = "R2";
 
     private TextMeshProUGUI buttonText;
     private CanvasGroup canvasGroup;
@@ -27,7 +27,7 @@ public class DashIndicator : MonoBehaviour
 
         if (buttonText != null)
         {
-            buttonText.text = label;
+            //buttonText.text = label;
         }
 
         canvasGroup.blocksRaycasts = false; // ikke bloker raycast (det skal ikke have indflydelse på spillet)
@@ -41,7 +41,7 @@ public class DashIndicator : MonoBehaviour
         // Altid se mod kameraet
         Canvas.transform.LookAt(Canvas.transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
 
-        // Læs canDash direkte fra PlayerController — ingen duplikeret logik
+        // Læs canDash fra PlayerController
         SetVisible(playerController.canDash);
     }
 
@@ -49,7 +49,7 @@ public class DashIndicator : MonoBehaviour
     {
         if (canvasGroup != null)
         {
-            // Smooth fade frem for hårdt snap
+            // Fade ind og ud
             canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, visible ? 1f : 0f, Time.deltaTime * 12f);
             canvasGroup.interactable = visible;
         }
