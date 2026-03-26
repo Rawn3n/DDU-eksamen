@@ -76,6 +76,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("Now controlling: Player " + (index + 1));
     }
 
+    public PlayerController GetActivePlayer()
+    {
+        return ActivePlayer;
+    }
+
     #region Player Input Ting
     public void OnMove(InputAction.CallbackContext ctx)
     {

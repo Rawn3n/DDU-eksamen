@@ -105,6 +105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JumpPad
   jumpForce: 1000
+  jumpLyd: {fileID: 8300000, guid: 4558cddf432140545bcb36591596821f, type: 3}
 --- !u!61 &1708044153605031377
 BoxCollider2D:
   m_ObjectHideFlags: 0

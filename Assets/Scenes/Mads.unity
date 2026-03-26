@@ -1031,6 +1031,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &690621530
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 690621531}
+  - component: {fileID: 690621532}
+  m_Layer: 0
+  m_Name: DistracionSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &690621531
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690621530}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 17.019999, y: 6.69, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &690621532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690621530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87070434e38795d4ab28c213cb88521d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Distraction
+  musicNotePrefab: {fileID: 4969502111191331599, guid: 8a52709f95b1502449af0c6f2ceef1bd, type: 3}
+  noteCount: 8
+  noteSpeed: 4
+  noteSpawnSpread: 2
+  spawnPoint: {fileID: 690621531}
+  spawnFromLeft: 0
 --- !u!1 &726788046
 GameObject:
   m_ObjectHideFlags: 0
@@ -1279,55 +1329,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!1 &734869139
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 734869141}
-  - component: {fileID: 734869140}
-  m_Layer: 0
-  m_Name: Distraction Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &734869140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 734869139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87070434e38795d4ab28c213cb88521d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Distraction
-  musicNotePrefab: {fileID: 4969502111191331599, guid: 8a52709f95b1502449af0c6f2ceef1bd, type: 3}
-  noteCount: 8
-  noteSpeed: 4
-  noteSpawnSpread: 2
-  distractionDuration: 4
---- !u!4 &734869141
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 734869139}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &754436803
 GameObject:
   m_ObjectHideFlags: 0
@@ -6669,7 +6670,7 @@ SceneRoots:
   - {fileID: 171423811}
   - {fileID: 726788048}
   - {fileID: 420569911}
-  - {fileID: 734869141}
+  - {fileID: 690621531}
   - {fileID: 2048844998}
   - {fileID: 294555512}
   - {fileID: 1899523734}

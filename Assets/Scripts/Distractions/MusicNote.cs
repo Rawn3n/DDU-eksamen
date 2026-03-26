@@ -2,48 +2,45 @@ using UnityEngine;
 
 public class MusicNote : MonoBehaviour
 {
-    private float speed;
-    private Vector2 direction;
-    private float pushDirection;
-    private PlayerController[] players;
-    private bool isVisible = false;
+    [SerializeField] private float speed = 4f;
+    [SerializeField] private Vector2 direction = Vector2.right;
+    [SerializeField] private float pushStrength = 1f;
 
-    public void Init(Vector2 moveDirection, float moveSpeed, float push, PlayerController[] playerRefs)
+    private bool active = false;
+
+    public void Init(Vector2 moveDirection, float moveSpeed, float push)
     {
         direction = moveDirection;
         speed = moveSpeed;
-        pushDirection = push;
-        players = playerRefs;
+        pushStrength = push;
+
+        // Vent et frame før vi lytter på OnBecameInvisible, så noter der spawner udenfor kameraet ikke dør med det samme
+        Invoke(nameof(Activate), 2f);
     }
+
+    private void Activate() => active = true;
 
     private void Update()
     {
         transform.position += (Vector3)(direction * speed * Time.deltaTime);
 
-        // gør så at spilleren kun rykker sig når musik viser sig
-        if (isVisible)
+        PlayerController activePlayer = GameManager.Instance.GetActivePlayer();
+        if (activePlayer != null)
         {
-            PlayerController activePlayer = players[GameManager.Instance.activePlayerIndex];
-            activePlayer.distractionInput = new Vector2(pushDirection, 0f);
+            activePlayer.distractionInput = new Vector2(pushStrength, 0f);
         }
-    }
-
-    private void OnBecameVisible()
-    {
-        isVisible = true;
     }
 
     private void OnBecameInvisible()
     {
-        isVisible = false;
+        if (!active) return;
 
-        if (players != null)
+        PlayerController activePlayer = GameManager.Instance.GetActivePlayer();
+        if (activePlayer != null)
         {
-            foreach (PlayerController player in players)
-            {
-                player.distractionInput = Vector2.zero;
-            }
+            activePlayer.distractionInput = Vector2.zero;
         }
+
         Destroy(gameObject);
     }
 }
