@@ -44,5 +44,20 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 2924183093
+    locked: 0
+  - name: Play-Items
+    uniqueID: 1117444751
+    locked: 0
+  - name: Ice
+    uniqueID: 88200707
+    locked: 0
+  - name: Playground
+    uniqueID: 2915142541
+    locked: 0
+  - name: Foreground
+    uniqueID: 681421951
+    locked: 0
   m_RenderingLayers:
   - Default
