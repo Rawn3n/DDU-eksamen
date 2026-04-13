@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour
     {
 
         isRunning = Mathf.Abs(rb.linearVelocity.x) > 0.01f && !isCrouching && !isDashing && isGrounded() && !isWallSliding && !isWallJumping;
-        Debug.Log("IsRunning: " + isRunning);
+        //Debug.Log("IsRunning: " + isRunning);
 
         if (animator != null) // lav løbe animation
         {

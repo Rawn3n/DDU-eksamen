@@ -121,10 +121,19 @@ public class GameManager : MonoBehaviour
         else if (ctx.canceled) ActivePlayer.ReceiveWallSlide(false);
     }
 
-    public void OnInteract(InputAction.CallbackContext ctx)
+    public void OnInteract(InputAction.CallbackContext context)
     {
-        if (!ctx.performed) return;
-        ActivePlayer.ReceiveInteract();
+        Debug.Log("OnInteract fired. performed: " + context.performed);
+        if (!context.performed) return;
+
+        InteractionDetector detector = ActivePlayer.GetComponentInChildren<InteractionDetector>();
+        Debug.Log("Detector: " + detector);
+        Debug.Log("interactableInRange: " + (detector?.interactableInRange));
+
+        if (detector != null && detector.interactableInRange != null)
+        {
+            detector.interactableInRange.Interact();
+        }
     }
     #endregion
 }
