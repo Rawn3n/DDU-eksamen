@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 1fc537c33b1ed0d40bf9c1e8b46bb0ba
+guid: 381231c3dbed9df428c72967ac09d826
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6723963429988506304
-    second: Spikes_0
+      213: -925058003663290206
+    second: Monk-Mini_0
+  - first:
+      213: 1663091535190786095
+    second: Monk-Mini_1
+  - first:
+      213: 8076789699141253707
+    second: Monk-Mini_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +52,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 8
+  spritePixelsToUnits: 15
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,23 +106,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Spikes_0
+      name: Monk-Mini_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 16
-        height: 7
+        y: 18
+        width: 18
+        height: 18
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0ca9e2f4d11505d50800000000000000
-      internalID: 6723963429988506304
+      spriteID: 2a0840795a88923f0800000000000000
+      internalID: -925058003663290206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monk-Mini_1
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 18
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f20810890fc741710800000000000000
+      internalID: 1663091535190786095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monk-Mini_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4a39de4075861070800000000000000
+      internalID: 8076789699141253707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monk-Mini_3
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 0
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a4d3b4ff8edfd947b49461fee1c1cdf
+      internalID: 1786784998
       vertices: []
       indices: 
       edges: []
@@ -125,7 +197,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 680bda73390d4f24fb666cf44a32d1e9
     internalID: 0
     vertices: []
     indices: 
@@ -133,9 +205,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":18.0,"y":18.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Spikes_0: 6723963429988506304
+      Monk-Mini_0: -925058003663290206
+      Monk-Mini_1: 1663091535190786095
+      Monk-Mini_2: 8076789699141253707
+      Monk-Mini_3: 1786784998
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
