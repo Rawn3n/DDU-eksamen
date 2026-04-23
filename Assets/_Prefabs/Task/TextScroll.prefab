@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7242738478883508944}
   - component: {fileID: 5450791528816681589}
   - component: {fileID: -1944785589268835269}
+  - component: {fileID: 8094243512601878011}
   m_Layer: 0
   m_Name: TextScroll
   m_TagString: Untagged
@@ -127,6 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1d8bc5640e019144b50d98db149ca5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lektier
+  depsawnEffect: 0
 --- !u!61 &-1944785589268835269
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -173,3 +175,39 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.0666667, y: 1.0666667}
   m_EdgeRadius: 0
+--- !u!58 &8094243512601878011
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4668230025264247}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 7
