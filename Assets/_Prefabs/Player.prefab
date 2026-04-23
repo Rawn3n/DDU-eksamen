@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8202312457195614356}
   - component: {fileID: 4703307066335230502}
+  - component: {fileID: 2419900147321574419}
   m_Layer: 7
   m_Name: Indicator
   m_TagString: Untagged
@@ -52,6 +53,18 @@ MonoBehaviour:
   interactIcon: {fileID: 6684808486951456186}
   offset: {x: -0.8, y: 2, z: 0}
   fadeSpeed: 12
+--- !u!210 &2419900147321574419
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45972097264393811}
+  m_Enabled: 1
+  m_SortingLayerID: 2127245765
+  m_SortingLayer: 3
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &1896526516812175531
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,8 +214,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 2127245765
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 830c9e137da235545b29493cddfa92d2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -309,7 +322,7 @@ MonoBehaviour:
   dashVerticalMultiplier: 0.5
   maxDash: 1
   canDash: 0
-  dashLyd: {fileID: 8300000, guid: a7935d3d7266a8d47b6ddb34741aa42f, type: 3}
+  dashLyd: {fileID: 8300000, guid: f58d06d1b04c42e48af992de6267a7ab, type: 3}
   dashGravityAfter: 3
   isWallSliding: 0
   wallSlideSpeed: 2
@@ -553,7 +566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthSystem
   maxHealth: 3
-  deathLyd: {fileID: 8300000, guid: 18b47ffa96ac25440871b669d65bca95, type: 3}
+  deathLyd: {fileID: 8300000, guid: 32c09939cb6424a4eb5998709e130471, type: 3}
   respawnPoint: {x: 0, y: 0, z: 0}
   respawnEffectPrefab: {fileID: 8061728582368079118, guid: e48d9ee772557c74f83e8be863e0c972, type: 3}
 --- !u!95 &2538941377501588008
