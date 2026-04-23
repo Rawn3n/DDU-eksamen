@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Distraction : MonoBehaviour
 {
+    public static Distraction Instance;
+
     [Header("Noter")]
     public GameObject musicNotePrefab;
     public int noteCount = 8;
@@ -11,11 +13,25 @@ public class Distraction : MonoBehaviour
     [Header("Spawn punkt")]
     public Transform spawnPoint;
     public bool spawnFromLeft = true; // Retning noterne bevæger sig
+    [SerializeField]public bool instaSpawn = true;
 
-    private void Start()
+    private void Awake()
     {
-        Invoke(nameof(TriggerDistraction), 5f); //5 sekunder delay
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
+
+    public void Init()
+    {
+        if (instaSpawn) Invoke(nameof(TriggerDistraction), 5f); //5 sekunder delay
+    }
+
 
     public void TriggerDistraction()
     {

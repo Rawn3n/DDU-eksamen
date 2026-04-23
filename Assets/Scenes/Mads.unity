@@ -958,51 +958,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8fc4945c8d4e9d147b8f7f5ca9c4be6e, type: 3}
---- !u!1 &420569909
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 420569911}
-  - component: {fileID: 420569910}
-  m_Layer: 0
-  m_Name: HUD manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &420569910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 420569909}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 021da93a2a850664ebcbf3a94bb9a8bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HUD_manager
-  popupText: {fileID: 898593183}
---- !u!4 &420569911
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 420569909}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &463332764 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8140868955658168876, guid: 8fc4945c8d4e9d147b8f7f5ca9c4be6e, type: 3}
@@ -1631,56 +1586,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28323394ec64d734f87ec79766434da4, type: 3}
---- !u!1 &690621530
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 690621531}
-  - component: {fileID: 690621532}
-  m_Layer: 0
-  m_Name: DistracionSpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &690621531
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 690621530}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &690621532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 690621530}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87070434e38795d4ab28c213cb88521d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Distraction
-  musicNotePrefab: {fileID: 4969502111191331599, guid: 8a52709f95b1502449af0c6f2ceef1bd, type: 3}
-  noteCount: 8
-  noteSpeed: 4
-  noteSpawnSpread: 2
-  spawnPoint: {fileID: 690621531}
-  spawnFromLeft: 0
 --- !u!1 &726788046
 GameObject:
   m_ObjectHideFlags: 0
@@ -1692,6 +1597,9 @@ GameObject:
   - component: {fileID: 726788048}
   - component: {fileID: 726788047}
   - component: {fileID: 726788049}
+  - component: {fileID: 726788052}
+  - component: {fileID: 726788051}
+  - component: {fileID: 726788050}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1929,6 +1837,51 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &726788050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726788046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87070434e38795d4ab28c213cb88521d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Distraction
+  musicNotePrefab: {fileID: 4969502111191331599, guid: 8a52709f95b1502449af0c6f2ceef1bd, type: 3}
+  noteCount: 8
+  noteSpeed: 4
+  noteSpawnSpread: 2
+  spawnPoint: {fileID: 726788048}
+  spawnFromLeft: 0
+  instaSpawn: 0
+--- !u!114 &726788051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726788046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d133ef0973e2aeb47852d57360c18755, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseManager
+  pauseMenuUI: {fileID: 0}
+--- !u!114 &726788052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726788046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 021da93a2a850664ebcbf3a94bb9a8bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HUD_manager
+  popupText: {fileID: 898593183}
 --- !u!1 &754436803
 GameObject:
   m_ObjectHideFlags: 0
@@ -2870,51 +2823,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4994e884b2ce1c24fab7a2ac2e1880f7, type: 3}
---- !u!1 &936158370
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 936158372}
-  - component: {fileID: 936158371}
-  m_Layer: 0
-  m_Name: PauseManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &936158371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 936158370}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d133ef0973e2aeb47852d57360c18755, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PauseManager
-  pauseMenuUI: {fileID: 0}
---- !u!4 &936158372
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 936158370}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &961436995
 GameObject:
   m_ObjectHideFlags: 0
@@ -8252,9 +8160,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 171423811}
   - {fileID: 726788048}
-  - {fileID: 420569911}
-  - {fileID: 936158372}
-  - {fileID: 690621531}
   - {fileID: 2048844998}
   - {fileID: 1237402728}
   - {fileID: 781733430}

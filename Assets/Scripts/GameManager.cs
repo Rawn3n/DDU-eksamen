@@ -17,8 +17,9 @@ public class GameManager : MonoBehaviour
     public GameObject switchEffectPrefab;
 
     public int activePlayerIndex = 0;
-
     private PlayerController ActivePlayer => activePlayerIndex == 0 ? player1 : player2;
+
+    private Coroutine switchCoroutine;
 
     void Awake()
     {
@@ -33,27 +34,43 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Kan blive kaldt ved GameManager.Instance.funktionnavn(); @Mikkel
-    void Start()
+    public void Init()
     {
         SetActivePlayer(0);
-        StartCoroutine(AutoSwitchLoop());
+        StopAllCoroutines();
+        switchCoroutine = StartCoroutine(AutoSwitchLoop());
     }
 
     IEnumerator AutoSwitchLoop()
     {
         while (true)
         {
-            yield return new WaitForSeconds(switchInterval + Random.Range(-5f,5f));
+            yield return new WaitForSeconds(switchInterval + Random.Range(-5f, 5f));
             PlayerSwitch();
+        }
+    }
+
+    public void FreezeSwitch()
+    {
+        if (switchCoroutine != null)
+        {
+            StopCoroutine(switchCoroutine);
+            switchCoroutine = null;
+        }
+    }
+
+    public void UnfreezeSwitch()
+    {
+        if (switchCoroutine == null)
+        {
+            switchCoroutine = StartCoroutine(AutoSwitchLoop());
         }
     }
 
     public void PlayerSwitch()
     {
-        PlayerController leaving = activePlayerIndex == 0 ? player1 : player2; //clear distraction
+        PlayerController leaving = activePlayerIndex == 0 ? player1 : player2;
         leaving.distractionInput = Vector2.zero;
-
         activePlayerIndex = activePlayerIndex == 0 ? 1 : 0;
         SetActivePlayer(activePlayerIndex);
     }
@@ -62,16 +79,14 @@ public class GameManager : MonoBehaviour
     {
         player1.SetActive(index == 0);
         player2.SetActive(index == 1);
-
         Transform target = index == 0 ? player1.transform : player2.transform;
         CameraFollow.Instance.SetTarget(target);
 
-        if (switchEffectPrefab != null) 
+        if (switchEffectPrefab != null)
         {
             GameObject effect = Instantiate(switchEffectPrefab, target.position, Quaternion.identity);
             Destroy(effect, 2f);
         }
-
 
         Debug.Log("Now controlling: Player " + (index + 1));
     }
@@ -81,7 +96,7 @@ public class GameManager : MonoBehaviour
         return ActivePlayer;
     }
 
-    #region Player Input Ting
+    #region Player Input
     public void OnMove(InputAction.CallbackContext ctx)
     {
         ActivePlayer.ReceiveMove(ctx.ReadValue<Vector2>());
@@ -97,6 +112,7 @@ public class GameManager : MonoBehaviour
         if (!ctx.performed) return;
         ActivePlayer.ReceiveJump();
     }
+
     public void OnDash(InputAction.CallbackContext ctx)
     {
         if (!ctx.performed) return;

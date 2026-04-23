@@ -3,7 +3,7 @@ using UnityEngine;
 public class PauseManager : MonoBehaviour
 {
     public static PauseManager Instance;
-    public GameObject pauseMenuUI;
+    public GameObject pauseMenuUI; // ikke brugt rn
     public bool IsPaused { get; private set; } = false;
 
     void Awake()
@@ -12,7 +12,6 @@ public class PauseManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    // Til Pause menu
     public void TogglePause()
     {
         if (IsPaused) Resume();
@@ -33,7 +32,7 @@ public class PauseManager : MonoBehaviour
         IsPaused = true;
     }
 
-    // Til dialog system og mere
+
     public void FreezeGameplay()
     {
         Time.timeScale = 0f;

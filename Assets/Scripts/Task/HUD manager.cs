@@ -7,14 +7,13 @@ public class HUD_manager : MonoBehaviour
     public static HUD_manager Instance;
 
     [Header("Popup Effekt")]
-    [SerializeField] private TMP_Text popupText;
+    [SerializeField] public TMP_Text popupText;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -68,8 +67,4 @@ public class HUD_manager : MonoBehaviour
         popupText.color = new Color(1, 1, 1, 0);
         popupText.transform.localScale = Vector3.zero;
     }
-
-    // ---- TILFØJ FLERE HER EFTERHÅNDEN ----
-    // public void UpdateHealth(int current, int max) { }
-    // public void UpdateTimer(float sekunder) { }
 }

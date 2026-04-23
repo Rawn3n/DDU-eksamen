@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using System.Collections;
 
 public class NPC : MonoBehaviour, IInteractable
@@ -19,19 +20,12 @@ public class NPC : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        if (dialog == null)
-        {
-            return;
-        }
+        if (dialog == null) return;
 
         if (isDialogActive)
-        {
             NextLine();
-        }
         else
-        {
             StartDialog();
-        }
     }
 
     public void StartDialog()
@@ -44,9 +38,25 @@ public class NPC : MonoBehaviour, IInteractable
 
         dialogPanel.SetActive(true);
 
-        PauseManager.Instance.FreezeGameplay();
+        GameManager.Instance.GetComponent<PlayerInput>()
+            .SwitchCurrentActionMap("UI");
 
+        GameManager.Instance.FreezeSwitch();
+        PauseManager.Instance.FreezeGameplay();
         StartCoroutine(TypeLine());
+    }
+
+    public void EndDialog()
+    {
+        StopAllCoroutines();
+        isDialogActive = false;
+        dialogText.SetText("");
+        dialogPanel.SetActive(false);
+
+        GameManager.Instance.GetComponent<PlayerInput>().SwitchCurrentActionMap("Player");
+
+        GameManager.Instance.UnfreezeSwitch();
+        PauseManager.Instance.UnfreezeGameplay();
     }
 
     IEnumerator TypeLine()
@@ -81,22 +91,8 @@ public class NPC : MonoBehaviour, IInteractable
 
         dialogIndex++;
         if (dialogIndex < dialog.dialogLines.Length)
-        {
             StartCoroutine(TypeLine());
-        }
         else
-        {
             EndDialog();
-        }
-    }
-
-    public void EndDialog()
-    {
-        StopAllCoroutines();
-        isDialogActive = false;
-        dialogText.SetText("");
-        dialogPanel.SetActive(false);
-
-        PauseManager.Instance.UnfreezeGameplay();
     }
 }
