@@ -80,9 +80,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 2127245765
-  m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingLayerID: -779847069
+  m_SortingLayer: 4
+  m_SortingOrder: 1
   m_Sprite: {fileID: 3402470662203763284, guid: 9e0ed5e0cd828d547bea12e68aa1c16e, type: 3}
   m_Color: {r: 1, g: 0.703978, b: 0, a: 1}
   m_FlipX: 0
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JumpPad
   jumpForce: 1000
-  jumpLyd: {fileID: 8300000, guid: 4558cddf432140545bcb36591596821f, type: 3}
+  jumpLyd: {fileID: 8300000, guid: 09bb8f69d833e92489d512bfd57830b9, type: 3}
 --- !u!61 &1708044153605031377
 BoxCollider2D:
   m_ObjectHideFlags: 0
