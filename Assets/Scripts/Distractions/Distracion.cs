@@ -29,7 +29,7 @@ public class Distraction : MonoBehaviour
 
     public void Init()
     {
-        if (instaSpawn) Invoke(nameof(TriggerDistraction), 5f); //5 sekunder delay
+        if (instaSpawn) Invoke(nameof(TriggerDistraction), 15f); //5 sekunder delay
     }
 
 
