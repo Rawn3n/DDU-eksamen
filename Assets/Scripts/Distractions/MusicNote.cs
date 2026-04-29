@@ -41,6 +41,11 @@ public class MusicNote : MonoBehaviour
             activePlayer.distractionInput = Vector2.zero;
         }
 
+        if (FindObjectsByType<MusicNote>(FindObjectsSortMode.None).Length <= 1)
+        {
+            Distraction.Instance.StopMusic();
+        }
+
         Destroy(gameObject);
     }
 }

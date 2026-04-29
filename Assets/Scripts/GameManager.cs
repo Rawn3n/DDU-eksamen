@@ -7,8 +7,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [Header("Players")]
-    public PlayerController player1;
-    public PlayerController player2;
+        public PlayerController player1;
+        public PlayerController player2;
 
     [Header("Switch Settings")]
     [SerializeField] public float switchInterval = 10f;
@@ -21,11 +21,15 @@ public class GameManager : MonoBehaviour
 
     private Coroutine switchCoroutine;
 
+    private AudioSource audioSource;
+    [SerializeField] AudioClip gameSound;
+
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            audioSource = gameObject.AddComponent<AudioSource>();
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -39,6 +43,7 @@ public class GameManager : MonoBehaviour
         SetActivePlayer(0);
         StopAllCoroutines();
         switchCoroutine = StartCoroutine(AutoSwitchLoop());
+        PlayGameMusic();
     }
 
     IEnumerator AutoSwitchLoop()
@@ -94,6 +99,22 @@ public class GameManager : MonoBehaviour
     public PlayerController GetActivePlayer()
     {
         return ActivePlayer;
+    }
+
+    public void PlayGameMusic()
+    {
+        if (gameSound != null)
+        {
+            audioSource.clip = gameSound;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+    }
+
+    public void StopGameMusic()
+    {
+        audioSource.loop = false;
+        audioSource.Stop();
     }
 
     #region Player Input

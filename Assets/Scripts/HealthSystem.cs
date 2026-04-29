@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class HealthSystem : MonoBehaviour
 {
-    [SerializeField] int maxHealth = 3;
+    [SerializeField] int maxHealth = 1;
     int currentHealth;
     public AudioClip deathLyd;
     private AudioSource audioSource;

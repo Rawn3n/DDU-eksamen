@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public abstract class Task : MonoBehaviour
 {
@@ -8,5 +9,6 @@ public abstract class Task : MonoBehaviour
     {
         IsCompleted = true;
         Debug.Log($"task completed!");
+        SceneManager.LoadScene("LevelSelect");
     }
 }

@@ -559,6 +559,8 @@ MonoBehaviour:
   spawnPoint: {fileID: 1434028249}
   spawnFromLeft: 0
   instaSpawn: 1
+  distractionSound: {fileID: 8300000, guid: 779166e19f8f91e47afabf46cd2b69d6, type: 3}
+  musicPlaying: 0
 --- !u!114 &1434028245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,6 +802,7 @@ MonoBehaviour:
   switchInterval: 10
   switchEffectPrefab: {fileID: 7945928178840403938, guid: 9c5542247711e574a8d39f915e4a4e07, type: 3}
   activePlayerIndex: 0
+  gameSound: {fileID: 8300000, guid: 9cce17c8a76383441b5cbad2edf2cf87, type: 3}
 --- !u!4 &1434028249
 Transform:
   m_ObjectHideFlags: 0

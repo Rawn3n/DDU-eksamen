@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Distraction : MonoBehaviour
 {
@@ -15,17 +16,23 @@ public class Distraction : MonoBehaviour
     public bool spawnFromLeft = true; // Retning noterne bevæger sig
     [SerializeField]public bool instaSpawn = true;
 
+    private AudioSource audioSource;
+    [SerializeField] AudioClip distractionSound;
+    public bool musicPlaying = false;
+
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            audioSource = gameObject.AddComponent<AudioSource>(); // Add persistent AudioSource
         }
         else
         {
             Destroy(gameObject);
         }
     }
+
 
     public void Init()
     {
@@ -36,6 +43,15 @@ public class Distraction : MonoBehaviour
     public void TriggerDistraction()
     {
         SpawnNotes();
+
+        if (!musicPlaying)
+        {
+            GameManager.Instance.StopGameMusic();
+
+            audioSource.clip = distractionSound;
+            audioSource.Play();
+            musicPlaying = true;
+        }
     }
 
     private void SpawnNotes()
@@ -60,5 +76,16 @@ public class Distraction : MonoBehaviour
             GameObject note = Instantiate(musicNotePrefab, spawnPos, Quaternion.identity);
             note.GetComponent<MusicNote>().Init(moveDir, noteSpeed + Random.Range(-0.5f, 0.5f), push);
         }
+    }
+    public void StopMusic()
+    {
+        if (musicPlaying == false )
+        {
+            return;
+        }
+
+        audioSource.Stop();
+        musicPlaying = false;
+        GameManager.Instance.PlayGameMusic();
     }
 }

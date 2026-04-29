@@ -19,4 +19,4 @@ MonoBehaviour:
   - Hello Young Traveler, I am the Monk.
   - My job is to help you find peace in your body.
   autoProgess: 0100
-  autoProgressDelay: 1.5
+  autoProgressDelay: 0.5
